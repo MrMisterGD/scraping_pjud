@@ -1,0 +1,91 @@
+-- MySQL Workbench Forward Engineering
+
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
+
+-- -----------------------------------------------------
+-- Schema wspjud_py
+-- -----------------------------------------------------
+
+-- -----------------------------------------------------
+-- Schema wspjud_py
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `wspjud_py` DEFAULT CHARACTER SET utf8 ;
+-- -----------------------------------------------------
+-- Schema wspjud_py
+-- -----------------------------------------------------
+
+-- -----------------------------------------------------
+-- Schema wspjud_py
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `wspjud_py` DEFAULT CHARACTER SET utf8 ;
+USE `wspjud_py` ;
+
+-- -----------------------------------------------------
+-- Table `wspjud_py`.`persona`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `wspjud_py`.`persona` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `rut` INT(11) NULL DEFAULT NULL,
+  `dv` INT(11) NULL DEFAULT NULL,
+  `created_at` DATETIME NULL DEFAULT NULL,
+  `updated_at` DATETIME NULL DEFAULT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 4
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `wspjud_py`.`reca`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `wspjud_py`.`reca` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `persona_id` INT(11) NOT NULL,
+  `rit` TEXT NULL DEFAULT NULL,
+  `n_causa` TEXT NULL DEFAULT NULL,
+  `caratulado` TEXT NULL DEFAULT NULL,
+  `competencia` VARCHAR(45) NULL DEFAULT NULL,
+  `tribunal` VARCHAR(255) NULL DEFAULT NULL,
+  `corte` VARCHAR(255) NULL DEFAULT NULL,
+  `fecha_ing_causa` TEXT NULL DEFAULT NULL,
+  `created_at` DATETIME NULL DEFAULT NULL,
+  `updated_at` DATETIME NULL DEFAULT NULL,
+  PRIMARY KEY (`id`, `persona_id`),
+  INDEX `fk_RECA_persona_idx` (`persona_id` ASC),
+  CONSTRAINT `fk_RECA_persona`
+    FOREIGN KEY (`persona_id`)
+    REFERENCES `wspjud_py`.`persona` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+AUTO_INCREMENT = 369
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `wspjud_py`.`pjud`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `wspjud_py`.`pjud` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `reca_id` INT(11) NOT NULL,
+  `reca_persona_id` INT(11) NOT NULL,
+  `estado` VARCHAR(255) NULL,
+  `etapa` VARCHAR(255) NULL,
+  `created_at` DATETIME NULL,
+  `updated_at` DATETIME NULL,
+  PRIMARY KEY (`id`, `reca_id`, `reca_persona_id`),
+  INDEX `fk_pjud_reca_idx` (`reca_id` ASC, `reca_persona_id` ASC),
+  CONSTRAINT `fk_pjud_reca`
+    FOREIGN KEY (`reca_id` , `reca_persona_id`)
+    REFERENCES `wspjud_py`.`reca` (`id` , `persona_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+USE `wspjud_py` ;
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
